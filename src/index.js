@@ -1,32 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Match, Miss } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
+import './index.css';
+
 import App from './App';
 import Setup from './Setup';
 import NotFound from './NotFound';
-import './index.css';
-
-const isSetupComplete = localStorage.getItem('is-setup-complete');
 
 const Root = () => {
 	return (
-		<BrowserRouter>
-			<div>
-				<Match exactly pattern="/" component={App} />
-				<Miss component={NotFound} />
-			</div>
-		</BrowserRouter>
+		<Router history={browserHistory}>
+	    <Route path="/" component={App}/>
+	    <Route path="/setup" component={Setup}/>
+	    <Route path="*" component={NotFound}/>
+	  </Router>
 	)
 }
 
-if (isSetupComplete) {
-	ReactDOM.render(
-	  <Root />,
-	  document.getElementById('root')
-	);
-} else {
-	ReactDOM.render(
-	  <Setup />,
-	  document.getElementById('root')
-	);
-}
+ReactDOM.render(
+  <Root />,
+  document.getElementById('root')
+);

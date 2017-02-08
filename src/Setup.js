@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
 import './App.css';
 
 class Setup extends Component {
@@ -8,7 +7,8 @@ class Setup extends Component {
     console.log('Setup done');
     localStorage.setItem('is-setup-complete', true);
     localStorage.setItem('is-notification-allowed', true);
-    this.context.router.transitionTo('/');
+    // this.context.router.transitionTo('/');
+    this.context.router.push('/');
   }
   render() {
     return (
@@ -25,6 +25,10 @@ class Setup extends Component {
       </div>
     );
   }
+}
+
+Setup.contextTypes = {
+  router: React.PropTypes.object
 }
 
 export default Setup;
