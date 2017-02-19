@@ -1,24 +1,131 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+html {
+  font-size: 16px;
+  background: #ef5de5;
   color: white;
 }
 
-.App-intro {
-  font-size: large;
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+html,
+body,
+select,
+input,
+button {
+  font-family: overpass, sans-serif;
+  font-size: 1rem;
+  font-weight: 200;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 200;
 }
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.wrap {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+}
+
+form {
+  /*padding: 1rem;*/
+  width: 100%;
+}
+
+input[type="text"] {
+  width: 100%;
+  border: 1px solid white;
+  background: #ef5de5;
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  height: 1.5em;
+  line-height: 1.5em;
+  padding: 0 .25em;
+}
+
+input[type="text"]:focus {
+  color: #ef5de5;
+  background: white;
+  border: 1px solid white;
+  outline: none;
+}
+
+select {
+  border: 1px solid white;
+  border-width: 0 0 1px;
+  background: #ef5de5;
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  height: 1.5em;
+  line-height: 1.5em;
+  padding: 0 .25em;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+button {
+  width: 100%;
+  border: 1px solid white;
+  background: #ef5de5;
+  color: white;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  height: 1.5em;
+  line-height: 1.5em;
+  padding: 0 .25em;
+  transition: all .3s ease;
+}
+
+button:hover {
+  background: white;
+  color: #ef5de5;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: white;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: white;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: white;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: white;
+}
+
+input:focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ef5de5;
+}
+input:focus::-moz-placeholder { /* Firefox 19+ */
+  color: #ef5de5;
+}
+input:focus:-ms-input-placeholder { /* IE 10+ */
+  color: #ef5de5;
+}
+input:focus:-moz-placeholder { /* Firefox 18- */
+  color: #ef5de5;
+}
+
+.add-location {
+  position: absolute;
+  top: 0;
+  transition: all .5s ease;
+  width: 100%;
+}
+
+.add-location {
+  left: -120%;
 }
