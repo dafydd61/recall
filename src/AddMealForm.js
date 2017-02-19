@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-// var Slider = require('react-slick');
-import Slider from 'react-slick';
 import AddLocationForm from './AddLocationForm';
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 class AddMealForm extends Component {
 
@@ -13,6 +8,7 @@ class AddMealForm extends Component {
     this.renderLocationOption = this.renderLocationOption.bind(this);
     this.createMeal = this.createMeal.bind(this);
     this.showAddLocationForm = this.showAddLocationForm.bind(this);
+    this.nextScreen = this.nextScreen.bind(this);
   }
 
   renderLocationOption(key) {
@@ -36,44 +32,66 @@ class AddMealForm extends Component {
 
   showAddLocationForm(event) {
     event.preventDefault();
-    console.log('Add Location');
+    const locationForm = document.getElementById('add-location');
+    locationForm.classList.remove('up');
+  }
+
+  nextScreen(event, screenId) {
+    event.preventDefault();
+    const currentScreen = document.querySelector('.current');
+    currentScreen.classList.add('previous');
+    currentScreen.classList.remove('current');
+    const nextScreen = document.getElementById(screenId);
+    console.log(nextScreen);
+    nextScreen.classList.add('current');
+    nextScreen.classList.remove('next');
   }
 
   render() {
-    const settings = {
-      dots: false,
-      arrows: false,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      cssEase: 'cubic-bezier(0.43, 0.06, 0.62, 1.31)'
-    }
     return (
       <div>
-        <AddLocationForm addLocation={this.props.addLocation} />
-        <form className="add-meal" onSubmit={this.createMeal}>
-          <Slider {...settings}>
-            <div>
+        <form className="add-meal screen-container" onSubmit={this.createMeal}>
+          <div id="add-meal__location" className="add-meal__location screen current">
+            <div className="form-content">
+              <h2>Where are you right now?</h2>
               <select name="location" ref={(input) => this.location = input}>
                 {Object.keys(this.props.locations).map(this.renderLocationOption)};
               </select>
               <button onClick={(e) => this.showAddLocationForm(e) }>New</button>
             </div>
-            <div>
+            <div className="form-nav">
+              <button onClick={(e) => this.nextScreen(e, 'add-meal__food') }>Next</button>
+            </div>
+          </div>
+          <div id="add-meal__food" className="add-meal__food screen next">
+            <div className="form-content">
               <input ref={(input) => this.food = input} type="text" name="food" placeholder="Food" />
             </div>
-            <div>
+            <div className="form-nav">
+              <button onClick={(e) => this.nextScreen(e, 'add-meal__bg') }>Next</button>
+            </div>
+          </div>
+          <div id="add-meal__bg" className="add-meal__bg screen next">
+            <div className="form-content">
               <input ref={(input) => this.bgLevel = input} type="text" name="bgLevel" placeholder="Bglevel" />
               <input ref={(input) => this.bgMotion = input} type="text" name="bgMotion" placeholder="Bgmotion" />
             </div>
-            <div>
+            <div className="form-nav">
+              <button onClick={(e) => this.nextScreen(e, 'add-meal__bolus') }>Next</button>
+            </div>
+          </div>
+          <div id="add-meal__bolus" className="add-meal__bolus screen next">
+            <div className="form-content">
               <input ref={(input) => this.bolus = input} type="text" name="bolus" placeholder="Bolus" />
               <input ref={(input) => this.combo = input} type="text" name="combo" placeholder="Combo" />
               <input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />
             </div>
-          </Slider>
+            <div className="form-nav">
+              <button type="submit">Submit</button>
+            </div>
+          </div>
         </form>
+        <AddLocationForm addLocation={this.props.addLocation} />
       </div>
     )
   }

@@ -69,12 +69,16 @@ class App extends Component {
   render() {
     return (
       <div className="App wrap">
-        <h2>Recall</h2>
-        <AddMealForm
-          addMeal={this.addMeal}
-          addLocation={this.addLocation}
-          locations={this.state.locations}
-        />
+        <div className="header">
+          <h1>Recall</h1>
+        </div>
+        <div className="content">
+          <AddMealForm
+            addMeal={this.addMeal}
+            addLocation={this.addLocation}
+            locations={this.state.locations}
+          />
+        </div>
       </div>
     );
   }

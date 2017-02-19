@@ -33,8 +33,11 @@ h1, h2, h3, h4, h5, h6 {
 .wrap {
   max-width: 600px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
   position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 form {
@@ -119,13 +122,61 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   color: #ef5de5;
 }
 
-.add-location {
-  position: absolute;
-  top: 0;
-  transition: all .5s ease;
-  width: 100%;
+.next {
+  transform: translateX(120%);
 }
 
-.add-location {
-  left: -120%;
+.previous {
+  transform: translateX(-120%);
+}
+
+.up {
+  transform: translateY(-120%);
+}
+
+.screen-container {
+  height: calc(100vh - 3rem);
+  /*height: 100%;*/
+  /*display: flex;*/
+  /*flex-grow: 1;*/
+}
+
+.header {
+  height: 3rem;
+  line-height: 3rem;
+  padding: 0 1rem;
+  background: rgba(255, 255, 255, .1);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.content {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+}
+
+.screen {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: all .3s ease;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  background: #ef5de5;
+}
+
+.form-content {
+  flex-grow: 1;
+}
+
+.form-nav button {
+  margin-bottom: 0;
 }

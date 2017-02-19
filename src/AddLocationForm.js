@@ -9,12 +9,19 @@ class AddLocationForm extends Component {
 			lastMeal: 0
 		}
 		this.props.addLocation(locationId, location);
+		const locationForm = document.getElementById('add-location');
+		locationForm.classList.add('up');
+	}
+	cancel(event) {
+		event.preventDefault();
+		const locationForm = document.getElementById('add-location');
+		locationForm.classList.add('up');
 	}
 	render() {
 		return (
-			<form className="add-location" onSubmit={(e) => this.createLocation(e)}>
+			<form id="add-location" className="add-location screen up" onSubmit={(e) => this.createLocation(e)}>
 			  <input ref={(input) => this.newLocation = input} name="newLocation" type="text" placeholder="Location" />
-			  <button type="submit">New Location</button>
+			  <button type="submit">Add</button><button onClick={(e) => this.cancel(e)}>Cancel</button>
 			</form>
 		)
 	}
