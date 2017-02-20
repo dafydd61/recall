@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import AddLocationForm from './AddLocationForm';
+import AddFoodItems from './AddFoodItems';
+import MealSummary from './MealSummary';
 
 class AddMealForm extends Component {
 
@@ -9,6 +11,25 @@ class AddMealForm extends Component {
     this.createMeal = this.createMeal.bind(this);
     this.showAddLocationForm = this.showAddLocationForm.bind(this);
     this.nextScreen = this.nextScreen.bind(this);
+    this.selectLocation = this.selectLocation.bind(this);
+    this.addFoodItem = this.addFoodItem.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({
+      lastMealId: '0',
+      foods: {},
+    })
+  }
+
+  componentDidMount() {
+    const locationSelect = document.getElementById('location');
+    const selectedLocation = locationSelect.value;
+    const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
+    this.setState({
+      lastMealId: lastMealId,
+      foods: {},
+    });
   }
 
   renderLocationOption(key) {
@@ -20,7 +41,7 @@ class AddMealForm extends Component {
     event.preventDefault();
     const meal = {
       location: this.location.value,
-      food: this.food.value,
+      foods: this.state.foods,
       bgLevel: this.bgLevel.value,
       bgMotion: this.bgMotion.value,
       bolus: this.bolus.value,
@@ -28,6 +49,21 @@ class AddMealForm extends Component {
       notes: this.notes.value,
     };
     this.props.addMeal(meal);
+  }
+
+  addFoodItem(index, foodItem) {
+    const foods = this.state.foods;
+    console.log(foods);
+    foods[index] = foodItem;
+    this.setState({ foods })
+  }
+
+  selectLocation() {
+    const selectedLocation = this.location.value;
+    const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
+    this.setState({
+      lastMealId
+    });
   }
 
   showAddLocationForm(event) {
@@ -42,7 +78,7 @@ class AddMealForm extends Component {
     currentScreen.classList.add('previous');
     currentScreen.classList.remove('current');
     const nextScreen = document.getElementById(screenId);
-    console.log(nextScreen);
+    // console.log(nextScreen);
     nextScreen.classList.add('current');
     nextScreen.classList.remove('next');
   }
@@ -53,11 +89,17 @@ class AddMealForm extends Component {
         <form className="add-meal screen-container" onSubmit={this.createMeal}>
           <div id="add-meal__location" className="add-meal__location screen current">
             <div className="form-content">
-              <h2>Where are you right now?</h2>
-              <select name="location" ref={(input) => this.location = input}>
-                {Object.keys(this.props.locations).map(this.renderLocationOption)};
-              </select>
-              <button onClick={(e) => this.showAddLocationForm(e) }>New</button>
+              <h2>About to eat? Tell me where...</h2>
+              <div className="form-controls--inline">
+                <select id="location" name="location" ref={(input) => this.location = input} onChange={this.selectLocation}>
+                  {Object.keys(this.props.locations).map(this.renderLocationOption)};
+                </select>
+                <button className="btn btn--add" onClick={(e) => this.showAddLocationForm(e) }>+</button>
+              </div>
+              <MealSummary
+                mealId={this.state.lastMealId}
+                meals={this.props.meals}
+              />
             </div>
             <div className="form-nav">
               <button onClick={(e) => this.nextScreen(e, 'add-meal__food') }>Next</button>
@@ -65,7 +107,10 @@ class AddMealForm extends Component {
           </div>
           <div id="add-meal__food" className="add-meal__food screen next">
             <div className="form-content">
-              <input ref={(input) => this.food = input} type="text" name="food" placeholder="Food" />
+              <AddFoodItems
+                foods={this.state.foods}
+                addFoodItem={this.addFoodItem}
+              />
             </div>
             <div className="form-nav">
               <button onClick={(e) => this.nextScreen(e, 'add-meal__bg') }>Next</button>

@@ -24,7 +24,7 @@ class App extends Component {
         const locations = {
           home: {
             name: 'Home',
-            lastMeal: 0
+            lastMeal: '0'
           }
         };
         this.setState({ locations });
@@ -77,6 +77,7 @@ class App extends Component {
             addMeal={this.addMeal}
             addLocation={this.addLocation}
             locations={this.state.locations}
+            meals={this.state.meals}
           />
         </div>
       </div>

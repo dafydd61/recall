@@ -6,7 +6,7 @@ class AddLocationForm extends Component {
 		const locationId = this.newLocation.value.replace(/ /g , '-').toLowerCase();
 		const location = {
 			name: this.newLocation.value,
-			lastMeal: 0
+			lastMeal: "0"
 		}
 		this.props.addLocation(locationId, location);
 		const locationForm = document.getElementById('add-location');

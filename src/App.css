@@ -180,3 +180,23 @@ input:focus:-moz-placeholder { /* Firefox 18- */
 .form-nav button {
   margin-bottom: 0;
 }
+
+.form-controls--inline {
+  display: flex;
+}
+
+.form-controls--inline select {
+  flex-grow: 1;
+  /*margin-right: 1rem;*/
+}
+
+.form-controls--inline .btn--add {
+  flex-grow: 0;
+}
+
+.btn--add {
+  font-weight: bold;
+  width: auto;
+  padding: 0 1rem;
+  margin-left: 1rem;
+}
