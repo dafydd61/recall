@@ -59,6 +59,7 @@ class App extends Component {
   }
 
   addMeal(meal) {
+    console.log(meal);
     const id = Date.now();
     const meals = {...this.state.meals};
     meals[id] = meal;

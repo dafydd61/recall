@@ -23,6 +23,20 @@ class ConfirmMeal extends Component {
     checkInForm.classList.remove('next');
   }
 
+  showNotes(e) {
+    e.preventDefault();
+    const notesForm = document.getElementById('confirm__notes');
+    notesForm.classList.remove('up');
+  }
+
+  updateNotes(e) {
+    e.preventDefault();
+    const notes = this.notes.value;
+    this.props.updateNotes(notes);
+    const notesForm = document.getElementById('confirm__notes');
+    notesForm.classList.add('up');
+  }
+
   hideCheckInForm(e) {
     e.preventDefault();
     const checkInForm = document.getElementById('check-in');
@@ -30,14 +44,26 @@ class ConfirmMeal extends Component {
   }
 
   render() {
+    const checkin2 = this.props.bgLevel.post2 !== '' ? 'complete' : '';
+    const checkin4 = this.props.bgLevel.post4 !== '' ? 'complete' : '';
     return (
       <div className="screen-container">
         <div className="screen">
           <h2>Bon Appétit!</h2>
           <p>Come back in a couple of hours to let me know how things are going.</p>
-          <button onClick={(e) => this.showCheckInForm(e, '2')}>2 hour check-in</button>
-          <button onClick={(e) => this.showCheckInForm(e, '4')}>4 hour check-in</button>
+          <button className={checkin2} onClick={(e) => this.showCheckInForm(e, '2')}>2 hour check-in</button>
+          <button className={checkin4} onClick={(e) => this.showCheckInForm(e, '4')}>4 hour check-in</button>
+          <button onClick={(e) => this.showNotes(e)}>Notes</button>
           <button type="submit">Save this meal</button>
+        </div>
+        <div id="confirm__notes" className="screen up screen--notes">
+          <h2 className="title--screen">Notes</h2>
+          <div className="form-content">
+            <textarea ref={(input) => this.notes = input} defaultValue={this.props.notes} name="notes" id="notes" cols="30" rows="10" />
+          </div>
+          <div className="form-nav">
+            <button onClick={(e) => this.updateNotes(e)}>OK</button>
+          </div>
         </div>
         <div id="check-in" className="screen next check-in">
           <h2 className="title--screen">{this.state.checkInTime} hours later. What’s your sugar doing?</h2>

@@ -19,12 +19,30 @@ class AddMealForm extends Component {
     this.updateBg = this.updateBg.bind(this);
     this.useMeal = this.useMeal.bind(this);
     this.createCurrentMeal = this.createCurrentMeal.bind(this);
+    this.updateNotes = this.updateNotes.bind(this);
   }
 
   componentWillMount() {
     this.setState({
       lastMealId: '0',
-      foods: {},
+    });
+    this.createCurrentMeal();
+  }
+
+  createCurrentMeal(lastMealId=0) {
+    const id = Date.now();
+    const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
+    const location = lastMeal.location ? lastMeal.location : '';
+    const foods = lastMeal.foods ? lastMeal.foods : [];
+    const bolus = lastMeal.bolus ? lastMeal.bolus : '';
+    const combo = lastMeal.combo ? lastMeal.combo : '';
+    const currentMeal = {
+      id: id,
+      location: location,
+      foods: foods,
+      bolus: bolus,
+      combo: combo,
+      notes: '',
       bgLevel: {
         pre: '',
         post2: '',
@@ -35,32 +53,22 @@ class AddMealForm extends Component {
         post2: '',
         post4: '',
       }
-    });
-    this.createCurrentMeal();
-  }
-
-  createCurrentMeal(lastMealId=0) {
-    const id = Date.now();
-    const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
-    const foods = lastMeal.foods ? lastMeal.foods : {};
-    const bolus = lastMeal.bolus ? lastMeal.bolus : '';
-    const currentMeal = {
-      id: id,
-      foods: foods,
-      bolus: bolus,
     }
     this.setState({ currentMeal });
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
-    console.log(currentMeal);
   }
 
   componentDidMount() {
     const locationSelect = document.getElementById('location');
     const selectedLocation = locationSelect.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
+    const currentMeal = this.state.currentMeal;
+    currentMeal.location = selectedLocation;
     this.setState({
       lastMealId: lastMealId,
+      currentMeal: currentMeal,
     });
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   renderLocationOption(key) {
@@ -70,37 +78,53 @@ class AddMealForm extends Component {
 
   createMeal(event) {
     event.preventDefault();
-    const meal = {
-      location: this.location.value,
-      foods: this.state.foods,
-      bgLevel: {
-        pre:this.state.bgLevel.pre,
-        post2:this.state.bgLevel.post2,
-        post4:this.state.bgLevel.post4,
-      },
-      bgTrend: {
-        pre:this.state.bgTrend.pre,
-        post2:this.state.bgTrend.post2,
-        post4:this.state.bgTrend.post4,
-      },
-      bolus: this.bolus.value,
-      combo: this.combo.value,
-      notes: this.notes.value,
-    };
-    this.props.addMeal(meal);
+    this.props.addMeal(this.state.currentMeal);
+  }
+
+  // createMeal(event) {
+  //   event.preventDefault();
+  //   const meal = {
+  //     location: this.location.value,
+  //     foods: this.state.foods,
+  //     bgLevel: {
+  //       pre:this.state.bgLevel.pre,
+  //       post2:this.state.bgLevel.post2,
+  //       post4:this.state.bgLevel.post4,
+  //     },
+  //     bgTrend: {
+  //       pre:this.state.bgTrend.pre,
+  //       post2:this.state.bgTrend.post2,
+  //       post4:this.state.bgTrend.post4,
+  //     },
+  //     bolus: this.bolus.value,
+  //     combo: this.combo.value,
+  //     notes: this.notes.value,
+  //   };
+  //   this.props.addMeal(meal);
+  // }
+
+  updateBolus(e) {
+    const value = e.target.value;
+    const currentMeal = this.state.currentMeal;
+    currentMeal[e.target.name] = value;
+    this.setState({ currentMeal })
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   addFoodItem(index, foodItem) {
     const currentMeal = this.state.currentMeal;
     console.log(currentMeal);
-    currentMeal.foods[index] = foodItem;
+    currentMeal.foods.push(foodItem);
     this.setState({ currentMeal })
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   removeFoodItem(index) {
     const currentMeal = this.state.currentMeal;
-    delete currentMeal.foods[index];
+    currentMeal.foods = [
+      ...currentMeal.foods.slice(0, index),
+      ...currentMeal.foods.slice(index + 1)
+    ];
     this.setState({ currentMeal })
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
@@ -108,9 +132,13 @@ class AddMealForm extends Component {
   selectLocation() {
     const selectedLocation = this.location.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
+    const currentMeal = this.state.currentMeal;
+    currentMeal.location = selectedLocation;
     this.setState({
-      lastMealId
+      lastMealId: lastMealId,
+      currentMeal: currentMeal,
     });
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   showAddLocationForm(event) {
@@ -134,13 +162,22 @@ class AddMealForm extends Component {
 
   updateBg(e, newData, parameter, time) {
     e.preventDefault();
-    const paramToEdit = this.state[parameter];
+    const paramToEdit = this.state.currentMeal[parameter];
     console.log(paramToEdit);
     paramToEdit[time] = newData;
     console.log(paramToEdit);
     this.setState({
       paramToEdit
     });
+  }
+
+  updateNotes(newNotes) {
+    const currentMeal = this.state.currentMeal;
+    currentMeal.notes = newNotes;
+    this.setState({
+      currentMeal
+    });
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   checkLastMeal(mealId) {
@@ -174,7 +211,6 @@ class AddMealForm extends Component {
     this.createCurrentMeal(mealId);
     this.nextScreen(e, 'add-meal__food', 'newFoodItem')
   }
-
 
   render() {
     return (
@@ -225,7 +261,7 @@ class AddMealForm extends Component {
                     <BgButton
                       key={id}
                       id={id}
-                      selectedOption={this.state.bgLevel.pre}
+                      selectedOption={this.state.currentMeal.bgLevel.pre}
                       action={this.updateBg}
                       time='pre'
                       parameter='bgLevel'
@@ -237,7 +273,7 @@ class AddMealForm extends Component {
                     <BgButton
                       key={id}
                       id={id}
-                      selectedOption={this.state.bgTrend.pre}
+                      selectedOption={this.state.currentMeal.bgTrend.pre}
                       action={this.updateBg}
                       time='pre'
                       parameter='bgTrend'
@@ -252,9 +288,9 @@ class AddMealForm extends Component {
           </div>
           <div id="add-meal__bolus" className="add-meal__bolus screen next">
             <div className="form-content">
-              <input ref={(input) => this.bolus = input} type="text" id="bolus" name="bolus" placeholder="Bolus" />
-              <input ref={(input) => this.combo = input} type="text" name="combo" placeholder="Combo" />
-              <input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />
+              <input ref={(input) => this.bolus = input} type="number" id="bolus" name="bolus" placeholder="Bolus" onChange={(e) => this.updateBolus(e)} />
+              <input ref={(input) => this.combo = input} type="text" name="combo" placeholder="Combo" onChange={(e) => this.updateBolus(e)} />
+              {/*<input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />*/}
             </div>
             <div className="form-nav">
               <button onClick={(e) => this.nextScreen(e, 'add-meal__confirm') }>Ok. Let's eat.</button>
@@ -264,8 +300,10 @@ class AddMealForm extends Component {
             <ConfirmMeal
               bgTrends={this.props.bgTrends}
               bgLevels={this.props.bgLevels}
-              bgTrend={this.state.bgTrend}
-              bgLevel={this.state.bgLevel}
+              bgTrend={this.state.currentMeal.bgTrend}
+              bgLevel={this.state.currentMeal.bgLevel}
+              notes={this.state.currentMeal.notes}
+              updateNotes={this.updateNotes}
               updateBg={this.updateBg}
             />
           </div>
