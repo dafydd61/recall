@@ -91,16 +91,18 @@ class AddMealForm extends Component {
   }
 
   addFoodItem(index, foodItem) {
-    const foods = this.state.foods;
-    console.log(foods);
-    foods[index] = foodItem;
-    this.setState({ foods })
+    const currentMeal = this.state.currentMeal;
+    console.log(currentMeal);
+    currentMeal.foods[index] = foodItem;
+    this.setState({ currentMeal })
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   removeFoodItem(index) {
-    const foods = this.state.foods;
-    delete foods[index];
-    this.setState({ foods })
+    const currentMeal = this.state.currentMeal;
+    delete currentMeal.foods[index];
+    this.setState({ currentMeal })
+    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   selectLocation() {
@@ -205,7 +207,7 @@ class AddMealForm extends Component {
             <h2 className="title--screen">What are you planning to eat?</h2>
             <div className="form-content">
               <AddFoodItems
-                foods={this.state.foods}
+                foods={this.state.currentMeal.foods}
                 addFoodItem={this.addFoodItem}
                 removeFoodItem={this.removeFoodItem}
               />
