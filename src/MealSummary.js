@@ -50,10 +50,12 @@ class MealSummary extends Component {
 						<p>You bolused {meal.bolus} units of insulin.</p>
 						{this.bgReview('post2')}
 						{this.bgReview('post4')}
+						<h3>Notes</h3>
+						{meal.notes}
 					</div>
 					<div className="form-nav">
 						<button onClick={(e) => this.props.useMeal(e, mealId)}>Use this meal</button>
-					  <button onClick={(e) => this.props.nextScreen(e, 'add-meal__food', 'newFoodItem')}>New Meal</button>
+					  <button onClick={(e) => this.props.createCurrentMeal(e)}>New Meal</button>
 					</div>
 				</div>
 			)

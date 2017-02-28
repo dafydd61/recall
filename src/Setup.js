@@ -12,7 +12,7 @@ class Setup extends Component {
   }
   render() {
     return (
-      <div className="Setup">
+      <div className="Setup screen">
         <form className="setup" onSubmit={this.completeSetup.bind(this)}>
           <h2>Welcome to Recall</h2>
           <p>This app is designed to help you keep track of what you ate, how much insulin you took, and how it turned out.</p>
