@@ -9,7 +9,10 @@ class App extends Component {
     super();
     this.addLocation = this.addLocation.bind(this);
     this.addMeal = this.addMeal.bind(this);
+    this.bgLevels = ['above target', 'in range', 'low'];
+    this.bgTrends = ['climbing', 'steady', 'falling'];
   }
+
   componentWillMount() {
     const isSetupComplete = localStorage.getItem('is-setup-complete');
     if (!isSetupComplete) {
@@ -37,10 +40,13 @@ class App extends Component {
           meals: JSON.parse(mealsRef)
         });
       } else {
-        const meals = {};
+        const meals = {
+          currentMeal: '0'
+        };
         this.setState({ meals: meals });
         localStorage.setItem('meals', JSON.stringify(meals));
       }
+
     }
   }
 
@@ -64,6 +70,7 @@ class App extends Component {
      });
     localStorage.setItem('meals', JSON.stringify(meals));
     localStorage.setItem('locations', JSON.stringify(locations));
+    this.context.router.push('/');
   }
 
   render() {
@@ -78,6 +85,8 @@ class App extends Component {
             addLocation={this.addLocation}
             locations={this.state.locations}
             meals={this.state.meals}
+            bgLevels={this.bgLevels}
+            bgTrends={this.bgTrends}
           />
         </div>
       </div>

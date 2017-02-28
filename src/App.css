@@ -6,6 +6,7 @@ html {
 
 html {
   box-sizing: border-box;
+  font-size: 16px;
 }
 *, *:before, *:after {
   box-sizing: inherit;
@@ -17,12 +18,25 @@ select,
 input,
 button {
   font-family: overpass, sans-serif;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 200;
+}
+
+body,
+select,
+input,
+button {
+  font-size: 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 200;
+}
+
+a,
+a:hover,
+a:visited {
+  color: white;
 }
 
 @keyframes App-logo-spin {
@@ -41,20 +55,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 form {
-  /*padding: 1rem;*/
   width: 100%;
 }
 
 input[type="text"] {
   width: 100%;
   border: 1px solid white;
+  border-width: 0 0 1px;
   background: #ef5de5;
   color: white;
   margin-bottom: 1rem;
-  font-size: 2rem;
-  height: 1.5em;
-  line-height: 1.5em;
-  padding: 0 .25em;
+  /*font-size: 1.5rem;*/
+  height: 2rem;
+  line-height: 2rem;
+  padding: 0 .3rem;
+  border-radius: 0;
+  -webkit-appearance: none;
 }
 
 input[type="text"]:focus {
@@ -70,10 +86,10 @@ select {
   background: #ef5de5;
   color: white;
   margin-bottom: 1rem;
-  font-size: 2rem;
-  height: 1.5em;
-  line-height: 1.5em;
-  padding: 0 .25em;
+  /*font-size: 1.5rem;*/
+  height: 2rem;
+  line-height: 2rem;
+  padding: 0 .3rem;
   -webkit-appearance: none;
   border-radius: 0;
 }
@@ -84,11 +100,12 @@ button {
   background: #ef5de5;
   color: white;
   margin-bottom: 1rem;
-  font-size: 2rem;
-  height: 1.5em;
-  line-height: 1.5em;
-  padding: 0 .25em;
+  /*font-size: 1.25rem;*/
+  height: 2rem;
+  line-height: 2rem;
+  padding: 0;
   transition: all .3s ease;
+  display: inline-block;
 }
 
 button:hover {
@@ -136,9 +153,6 @@ input:focus:-moz-placeholder { /* Firefox 18- */
 
 .screen-container {
   height: calc(100vh - 3rem);
-  /*height: 100%;*/
-  /*display: flex;*/
-  /*flex-grow: 1;*/
 }
 
 .header {
@@ -175,9 +189,22 @@ input:focus:-moz-placeholder { /* Firefox 18- */
 
 .form-content {
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: scroll;
+}
+
+.form-nav {
+  margin-top: .5rem;
 }
 
 .form-nav button {
+  margin-bottom: 1rem;
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.form-nav button:last-child {
   margin-bottom: 0;
 }
 
@@ -196,7 +223,92 @@ input:focus:-moz-placeholder { /* Firefox 18- */
 
 .btn--add {
   font-weight: bold;
-  width: auto;
-  padding: 0 1rem;
-  margin-left: 1rem;
+  width: 2rem;
+  padding: 0;
+  background: white;
+  color: #ef5de5;
+  text-align: center;
+}
+
+.title--screen {
+  font-size: 1.25rem;
+}
+
+.food-item-list {
+  padding: 0;
+  list-style: none;
+  font-size: 1rem;
+}
+
+.bg-map__section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 50%;
+  padding: 0 .5rem;
+}
+
+.bg-map__option {
+  flex-grow: 1;
+  height: 33.33333%;
+  margin-bottom: 1rem;
+}
+
+.bg-map__option.active {
+  background: white;
+  color: #ef5de5;
+}
+
+.bg-map {
+  display: flex;
+  flex-grow: 1;
+  margin: 0 -.5rem;
+}
+
+.removeFoodItem {
+  font-size: 16px;
+  font-weight: bold;
+  height: 1.2rem;
+  width: 1.2rem;
+  line-height: 1.2rem;
+  border-radius: 2rem;
+  background: white;
+  color: #ef5de5;
+  display: inline-block;
+  text-align: center;
+}
+
+.MealSummary {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.MealSummary .form-content {
+  background: rgba(255, 255, 255, .1);
+  padding: .5rem;
+  margin-bottom: .5rem;
+}
+
+.MealSummary p,
+.MealSummary h3,
+.MealSummary ul {
+  margin: 0 0 .5rem;
+}
+.MealSummary h3 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.reveal__target {
+ /* max-height: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all .3s ease;*/
+}
+
+.reveal__target.open {
+ /* max-height: none;
+  height: auto;*/
 }
