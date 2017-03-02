@@ -50,7 +50,7 @@ class AddMealForm extends Component {
   createCurrentMeal(lastMealId=0) {
     const id = Date.now();
     const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
-    const location = lastMeal.location ? lastMeal.location : '';
+    const location = lastMeal.location ? lastMeal.location : this.location.value;
     const foods = lastMeal.foods ? lastMeal.foods : [];
     const bolus = lastMeal.bolus ? lastMeal.bolus : '';
     const combo = lastMeal.combo ? lastMeal.combo : '';
@@ -178,6 +178,9 @@ class AddMealForm extends Component {
     const nextScreen = document.getElementById(screenId);
     nextScreen.classList.add('current');
     nextScreen.classList.remove('next');
+    this.setState({
+      currentScreenId: screenId
+    });
     if (focusElement !== '') {
       nextScreen.addEventListener('transitionend', function() {document.getElementById(focusElement).focus()});
     }
@@ -227,12 +230,7 @@ class AddMealForm extends Component {
   }
 
   useMeal(e, mealId) {
-    // const mealToUse = this.props.meals[mealId];
-    // this.setState({
-      // foods: mealToUse.foods,
-    // });
     this.createCurrentMeal(mealId);
-    this.nextScreen(e, 'add-meal__food', 'newFoodItem')
   }
 
   render() {

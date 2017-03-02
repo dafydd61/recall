@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import AddMealForm from './AddMealForm';
+import Header from './Header';
+import MainNav from './MainNav';
 require('typeface-overpass');
 
 import './App.css';
@@ -9,8 +11,18 @@ class App extends Component {
     super();
     this.addLocation = this.addLocation.bind(this);
     this.addMeal = this.addMeal.bind(this);
+    this.clearAllData = this.clearAllData.bind(this);
     this.bgLevels = ['above target', 'in range', 'low'];
     this.bgTrends = ['climbing', 'steady', 'falling'];
+  }
+
+  clearAllData() {
+    localStorage.removeItem('locations');
+    localStorage.removeItem('currentMeal');
+    // localStorage.removeItem('is-notification-allowed');
+    // localStorage.removeItem('is-setup-complete');
+    localStorage.removeItem('meals');
+    this.context.router.push('/');
   }
 
   componentWillMount() {
@@ -77,9 +89,7 @@ class App extends Component {
   render() {
     return (
       <div className="App wrap">
-        <div className="header">
-          <h1>Recall</h1>
-        </div>
+        <Header />
         <div className="content">
           <AddMealForm
             addMeal={this.addMeal}
@@ -88,6 +98,9 @@ class App extends Component {
             meals={this.state.meals}
             bgLevels={this.bgLevels}
             bgTrends={this.bgTrends}
+          />
+          <MainNav
+            clearAllData={this.clearAllData}
           />
         </div>
       </div>

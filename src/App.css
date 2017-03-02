@@ -150,6 +150,10 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   transform: translateX(-120%);
 }
 
+.left {
+  transform: translateX(-120%);
+}
+
 .up {
   transform: translateY(-120%);
 }
@@ -158,14 +162,14 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   height: calc(100vh - 3rem);
 }
 
-.header {
+.Header {
   height: 3rem;
   line-height: 3rem;
   padding: 0 1rem;
   background: rgba(255, 255, 255, .1);
 }
 
-.header h1 {
+.Header h1 {
   margin: 0;
   font-size: 1rem;
 }
@@ -326,4 +330,81 @@ button.complete:after {
   padding: .5rem;
   flex-grow: 1;
   margin-bottom: 1rem;
+}
+
+.Header h1 {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+}
+
+.revealNav {
+  display: inline-block;
+  float: left;
+  margin-right: .5rem;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  margin-top: .5rem;
+  margin-bottom: 0;
+  border: none;
+  /*display: flex;*/
+}
+
+.hamburger-bar {
+  width: 70%;
+  height: 3px;
+  margin-bottom: 3px;
+  background: white;
+  display: block;
+  margin: 4px auto;
+  transition: all .3s ease;
+}
+
+.revealNav.open .hamburger-bar:first-of-type {
+  transform: translateY(7px) rotate(-45deg);
+}
+
+.revealNav.open .hamburger-bar:last-of-type {
+  transform: translateY(-7px) rotate(45deg);
+}
+
+.revealNav.open .hamburger-bar:nth-of-type(2) {
+  opacity: 0;
+}
+
+.revealNav:hover,
+.revealNav:active,
+.revealNav:focus {
+  background: transparent;
+  color: white;
+}
+
+.main-nav {
+  padding: 1rem 0;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-list li a {
+  font-size: 14px;
+  height: 2rem;
+  line-height: 2rem;
+  text-decoration: none;
+  display: block;
+  padding: 0 1rem;
+}
+
+.menu-list li:nth-of-type(2n-1) a {
+  background: rgba(255, 255, 255, .1);
+}
+
+.menu-list > li > a:hover,
+.menu-list > li > a:active,
+.menu-list > li > a:focus {
+  background: rgba(255, 255, 255, .2);
+
 }
