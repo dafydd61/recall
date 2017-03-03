@@ -16,7 +16,7 @@ class MainNav extends Component {
 		return (
 			<div id="main-nav" className="main-nav screen left">
 				<ol className="menu-list">
-					<li><a href="#">Settings</a></li>
+					<li><a href="#">What’s all this about?</a></li>
 					<li><a href="#" onClick={(e) => this.confirmClearData(e)}>Clear all data</a></li>
 				</ol>
 			</div>

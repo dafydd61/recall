@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import AddMealForm from './AddMealForm';
 import Header from './Header';
 import MainNav from './MainNav';
@@ -26,6 +27,9 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.setState({
+      modalIsOpen: false,
+    });
     const isSetupComplete = localStorage.getItem('is-setup-complete');
     if (!isSetupComplete) {
       this.context.router.push('/setup');
@@ -102,6 +106,15 @@ class App extends Component {
           <MainNav
             clearAllData={this.clearAllData}
           />
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            contentLabel='Modal'
+            className='Modal'
+            overlayClassName="Modal__overlay"
+          >
+            <h1>Modal!</h1>
+            <p>Here’s your modal.</p>
+          </Modal>
         </div>
       </div>
     );
