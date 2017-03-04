@@ -23,7 +23,7 @@ class App extends Component {
     localStorage.removeItem('is-notification-allowed');
     localStorage.removeItem('is-setup-complete');
     localStorage.removeItem('meals');
-    this.setState({});
+    this.setInitialState();
     this.context.router.push('/');
   }
 
