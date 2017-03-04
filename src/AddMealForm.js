@@ -47,7 +47,7 @@ class AddMealForm extends Component {
     // this.createCurrentMeal();
   }
 
-  createCurrentMeal(lastMealId=0) {
+  createCurrentMeal(e, lastMealId=0) {
     const id = Date.now();
     const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
     const location = lastMeal.location ? lastMeal.location : this.location.value;
@@ -74,7 +74,15 @@ class AddMealForm extends Component {
     }
     this.setState({ currentMeal });
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
-    this.goToScreen('add-meal__food', 'newFoodItem')
+    // this.nextScreen();
+    this.goToNextScreen(e);
+  }
+
+  goToNextScreen(e) {
+    e.preventDefault();
+    const nextScreen = this.props.viewportPosition + 1;
+    this.props.setViewportPosition(nextScreen);
+    console.log(nextScreen);
   }
 
   componentDidMount() {
@@ -99,28 +107,6 @@ class AddMealForm extends Component {
     event.preventDefault();
     this.props.addMeal(this.state.currentMeal);
   }
-
-  // createMeal(event) {
-  //   event.preventDefault();
-  //   const meal = {
-  //     location: this.location.value,
-  //     foods: this.state.foods,
-  //     bgLevel: {
-  //       pre:this.state.bgLevel.pre,
-  //       post2:this.state.bgLevel.post2,
-  //       post4:this.state.bgLevel.post4,
-  //     },
-  //     bgTrend: {
-  //       pre:this.state.bgTrend.pre,
-  //       post2:this.state.bgTrend.post2,
-  //       post4:this.state.bgTrend.post4,
-  //     },
-  //     bolus: this.bolus.value,
-  //     combo: this.combo.value,
-  //     notes: this.notes.value,
-  //   };
-  //   this.props.addMeal(meal);
-  // }
 
   updateBolus(e) {
     const value = e.target.value;
@@ -230,12 +216,12 @@ class AddMealForm extends Component {
   }
 
   useMeal(e, mealId) {
-    this.createCurrentMeal(mealId);
+    this.createCurrentMeal(e, mealId);
   }
 
   render() {
     return (
-      <div>
+      <div className={`viewport viewport-screen-${this.props.viewportPosition}`}>
         <form className="add-meal screen-container" onSubmit={this.createMeal}>
           <div id="add-meal__location" className="add-meal__location screen current">
             <div className="form-content">
@@ -250,17 +236,8 @@ class AddMealForm extends Component {
             </div>
             <div className="form-nav">
               {/*<button onClick={(e) => this.nextScreen(e, 'add-meal__food', 'newFoodItem') }>New Meal</button>*/}
-              <button onClick={(e) => this.createCurrentMeal() }>New Meal</button>
+              <button onClick={(e) => this.createCurrentMeal(e) }>New Meal</button>
             </div>
-          </div>
-          <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary screen up">
-            <MealSummary
-              mealId={this.state.lastMealId}
-              meals={this.props.meals}
-              nextScreen={this.nextScreen}
-              useMeal={this.useMeal}
-              createCurrentMeal={this.createCurrentMeal}
-            />
           </div>
           <div id="add-meal__food" className="add-meal__food screen next">
             <h2 className="title--screen">What are you planning to eat?</h2>
@@ -272,7 +249,7 @@ class AddMealForm extends Component {
               />
             </div>
             <div className="form-nav">
-              <button onClick={(e) => this.nextScreen(e, 'add-meal__bg') }>Next</button>
+              <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
             </div>
           </div>
           <div id="add-meal__bg" className="add-meal__bg screen next">
@@ -306,7 +283,7 @@ class AddMealForm extends Component {
               </div>
             </div>
             <div className="form-nav">
-              <button onClick={(e) => this.nextScreen(e, 'add-meal__bolus', 'bolus') }>Next</button>
+              <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
             </div>
           </div>
           <div id="add-meal__bolus" className="add-meal__bolus screen next">
@@ -316,7 +293,7 @@ class AddMealForm extends Component {
               {/*<input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />*/}
             </div>
             <div className="form-nav">
-              <button onClick={(e) => this.nextScreen(e, 'add-meal__confirm') }>Ok. Let's eat.</button>
+              <button onClick={(e) => this.goToNextScreen(e) }>Ok. Let's eat.</button>
             </div>
           </div>
           <div id="add-meal__confirm" className="add-meal__confirm screen next">
@@ -328,6 +305,15 @@ class AddMealForm extends Component {
               notes={this.state.currentMeal.notes}
               updateNotes={this.updateNotes}
               updateBg={this.updateBg}
+            />
+          </div>
+          <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
+            <MealSummary
+              mealId={this.state.lastMealId}
+              meals={this.props.meals}
+              nextScreen={this.nextScreen}
+              useMeal={this.useMeal}
+              createCurrentMeal={this.createCurrentMeal}
             />
           </div>
         </form>

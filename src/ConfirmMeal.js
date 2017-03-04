@@ -20,7 +20,7 @@ class ConfirmMeal extends Component {
     });
     console.log(`Check in: ${hours}`);
     const checkInForm = document.getElementById('check-in');
-    checkInForm.classList.remove('next');
+    checkInForm.classList.remove('up');
   }
 
   showNotes(e) {
@@ -40,14 +40,14 @@ class ConfirmMeal extends Component {
   hideCheckInForm(e) {
     e.preventDefault();
     const checkInForm = document.getElementById('check-in');
-    checkInForm.classList.add('next');
+    checkInForm.classList.add('up');
   }
 
   render() {
     const checkin2 = this.props.bgLevel.post2 !== '' ? 'complete' : '';
     const checkin4 = this.props.bgLevel.post4 !== '' ? 'complete' : '';
     return (
-      <div className="screen-container">
+      <div>
         <div className="screen">
           <h2>Bon Appétit!</h2>
           <p>Come back in a couple of hours to let me know how things are going.</p>
@@ -56,7 +56,7 @@ class ConfirmMeal extends Component {
           <button onClick={(e) => this.showNotes(e)}>Notes</button>
           <button type="submit">Save this meal</button>
         </div>
-        <div id="confirm__notes" className="screen up screen--notes">
+        <div id="confirm__notes" className="drop-in up screen--notes">
           <h2 className="title--screen">Notes</h2>
           <div className="form-content">
             <textarea ref={(input) => this.notes = input} defaultValue={this.props.notes} name="notes" id="notes" cols="30" rows="10" />
@@ -65,7 +65,7 @@ class ConfirmMeal extends Component {
             <button onClick={(e) => this.updateNotes(e)}>OK</button>
           </div>
         </div>
-        <div id="check-in" className="screen next check-in">
+        <div id="check-in" className="drop-in up check-in">
           <h2 className="title--screen">{this.state.checkInTime} hours later. What’s your sugar doing?</h2>
           <div className="form-content">
             <div className="bg-map">

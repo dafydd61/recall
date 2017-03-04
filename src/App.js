@@ -13,6 +13,7 @@ class App extends Component {
     this.addLocation = this.addLocation.bind(this);
     this.addMeal = this.addMeal.bind(this);
     this.clearAllData = this.clearAllData.bind(this);
+    this.setViewportPosition = this.setViewportPosition.bind(this);
     this.bgLevels = ['above target', 'in range', 'low'];
     this.bgTrends = ['climbing', 'steady', 'falling'];
   }
@@ -23,6 +24,7 @@ class App extends Component {
     localStorage.removeItem('is-notification-allowed');
     localStorage.removeItem('is-setup-complete');
     localStorage.removeItem('meals');
+    localStorage.removeItem('mealFormScreen');
     this.setInitialState();
     this.context.router.push('/');
   }
@@ -31,7 +33,7 @@ class App extends Component {
     const locations = {
       home: {
         name: 'Home',
-        lastMeal: '0'
+        lastMeal: '0',
       }
     }
     const meals = {}
@@ -39,7 +41,15 @@ class App extends Component {
       locations: locations,
       meals: meals,
       modalIsOpen: false,
+      mealFormScreen: 0,
     });
+  }
+
+  setViewportPosition(position) {
+    this.setState({
+      mealFormScreen: position,
+    })
+    localStorage.setItem('mealFormScreen', position);
   }
 
   componentWillMount() {
@@ -56,29 +66,14 @@ class App extends Component {
         this.setState({
           locations: JSON.parse(locationsRef)
         });
-      }/* else {
-        const locations = {
-          home: {
-            name: 'Home',
-            lastMeal: '0'
-          }
-        };
-        this.setState({ locations });
-        // localStorage.setItem('locations', JSON.stringify(locations));
-      }*/
+      }
 
       const mealsRef = localStorage.getItem('meals');
       if (mealsRef) {
         this.setState({
           meals: JSON.parse(mealsRef)
         });
-      }/* else {
-        const meals = {
-          currentMeal: '0'
-        };
-        this.setState({ meals: meals });
-        localStorage.setItem('meals', JSON.stringify(meals));
-      }*/
+      }
 
     }
   }
@@ -119,6 +114,8 @@ class App extends Component {
             meals={this.state.meals}
             bgLevels={this.bgLevels}
             bgTrends={this.bgTrends}
+            viewportPosition={this.state.mealFormScreen}
+            setViewportPosition={this.setViewportPosition}
           />
           <MainNav
             clearAllData={this.clearAllData}

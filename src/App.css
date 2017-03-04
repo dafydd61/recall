@@ -180,7 +180,8 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   display: flex;
 }
 
-.screen {
+.screen,
+.drop-in {
   position: absolute;
   left: 0;
   right: 0;
@@ -435,3 +436,70 @@ button.complete:after {
 .Modal h1 {
   margin-top: 0;
 }
+
+.viewport {
+  width: 100vw;
+  position: relative;
+  height: 100vh;
+  transition: all .3s ease;
+}
+
+.viewport .screen-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.viewport .screen {
+  width: 100vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.viewport .screen.next,
+.viewport .screen.previous {
+  transform: none;
+}
+
+.viewport .screen:nth-of-type(1n) {
+  left: 0;
+}
+
+.viewport .screen:nth-of-type(2n) {
+  left: 100vw;
+}
+
+.viewport .screen:nth-of-type(3n) {
+  left: 200vw;
+}
+
+.viewport .screen:nth-of-type(4n) {
+  left: 300vw;
+}
+
+.viewport .screen:nth-of-type(5n) {
+  left: 400vw;
+}
+
+.viewport-screen-0 {
+  left: 0;
+}
+
+.viewport-screen-1 {
+  left: -100vw;
+}
+
+.viewport-screen-2 {
+  left: -200vw;
+}
+
+.viewport-screen-3 {
+  left: -300vw;
+}
+
+.viewport-screen-4 {
+  left: -400vw;
+}
+
