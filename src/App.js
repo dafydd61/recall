@@ -27,10 +27,26 @@ class App extends Component {
     this.context.router.push('/');
   }
 
-  componentWillMount() {
+  setInitialState() {
+    const locations = {
+      home: {
+        name: 'Home',
+        lastMeal: '0'
+      }
+    }
+    const meals = {}
     this.setState({
+      locations: locations,
+      meals: meals,
       modalIsOpen: false,
     });
+  }
+
+  componentWillMount() {
+    this.setInitialState();
+    // this.setState({
+    //   modalIsOpen: false,
+    // });
     const isSetupComplete = localStorage.getItem('is-setup-complete');
     if (!isSetupComplete) {
       this.context.router.push('/setup');
@@ -40,7 +56,7 @@ class App extends Component {
         this.setState({
           locations: JSON.parse(locationsRef)
         });
-      } else {
+      }/* else {
         const locations = {
           home: {
             name: 'Home',
@@ -48,21 +64,21 @@ class App extends Component {
           }
         };
         this.setState({ locations });
-        localStorage.setItem('locations', JSON.stringify(locations));
-      }
+        // localStorage.setItem('locations', JSON.stringify(locations));
+      }*/
 
       const mealsRef = localStorage.getItem('meals');
       if (mealsRef) {
         this.setState({
           meals: JSON.parse(mealsRef)
         });
-      } else {
+      }/* else {
         const meals = {
           currentMeal: '0'
         };
         this.setState({ meals: meals });
         localStorage.setItem('meals', JSON.stringify(meals));
-      }
+      }*/
 
     }
   }
