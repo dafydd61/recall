@@ -20,8 +20,8 @@ class App extends Component {
   clearAllData() {
     localStorage.removeItem('locations');
     localStorage.removeItem('currentMeal');
-    // localStorage.removeItem('is-notification-allowed');
-    // localStorage.removeItem('is-setup-complete');
+    localStorage.removeItem('is-notification-allowed');
+    localStorage.removeItem('is-setup-complete');
     localStorage.removeItem('meals');
     this.context.router.push('/');
   }
