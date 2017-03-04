@@ -13,6 +13,7 @@ class App extends Component {
     this.addLocation = this.addLocation.bind(this);
     this.addMeal = this.addMeal.bind(this);
     this.clearAllData = this.clearAllData.bind(this);
+    // this.setupNewMeal = this.setupNewMeal.bind(this);
     this.setViewportPosition = this.setViewportPosition.bind(this);
     this.bgLevels = ['above target', 'in range', 'low'];
     this.bgTrends = ['climbing', 'steady', 'falling'];
@@ -27,6 +28,32 @@ class App extends Component {
     localStorage.removeItem('mealFormScreen');
     this.setInitialState();
     this.context.router.push('/');
+  }
+
+  createCurrentMeal() {
+    this.setState({
+      currentMeal: {
+        lastMealId: '0',
+        currentMeal: {
+          id: '0',
+          location: '',
+          foods: [],
+          bolus: '',
+          combo: '',
+          notes: '',
+          bgLevel: {
+            pre: '',
+            post2: '',
+            post4: '',
+          },
+          bgTrend: {
+            pre: '',
+            post2: '',
+            post4: '',
+          }
+        }
+      }
+    });
   }
 
   setInitialState() {
@@ -54,9 +81,6 @@ class App extends Component {
 
   componentWillMount() {
     this.setInitialState();
-    // this.setState({
-    //   modalIsOpen: false,
-    // });
     const isSetupComplete = localStorage.getItem('is-setup-complete');
     if (!isSetupComplete) {
       this.context.router.push('/setup');
@@ -74,6 +98,20 @@ class App extends Component {
           meals: JSON.parse(mealsRef)
         });
       }
+
+      const mealFormScreenRef = parseInt(localStorage.getItem('mealFormScreen'), 10);
+      if (mealFormScreenRef) {
+        this.setState({
+          mealFormScreen: mealFormScreenRef
+        });
+      } else {
+        this.setState({
+          mealFormScreen: 0
+        });
+        localStorage.setItem('mealFormScreen', 0);
+      }
+
+
 
     }
   }

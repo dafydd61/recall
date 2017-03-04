@@ -20,6 +20,7 @@ class AddMealForm extends Component {
     this.useMeal = this.useMeal.bind(this);
     this.createCurrentMeal = this.createCurrentMeal.bind(this);
     this.updateNotes = this.updateNotes.bind(this);
+    this.setupNewMeal = this.setupNewMeal.bind(this);
   }
 
   componentWillMount() {
@@ -44,7 +45,6 @@ class AddMealForm extends Component {
         }
       }
     });
-    // this.createCurrentMeal();
   }
 
   createCurrentMeal(e, lastMealId=0) {
@@ -85,7 +85,7 @@ class AddMealForm extends Component {
     console.log(nextScreen);
   }
 
-  componentDidMount() {
+  setupNewMeal() {
     const locationSelect = document.getElementById('location');
     const selectedLocation = locationSelect.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
@@ -96,6 +96,10 @@ class AddMealForm extends Component {
       currentMeal: currentMeal,
     });
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
+  }
+
+  componentDidMount() {
+    this.setupNewMeal();
   }
 
   renderLocationOption(key) {
