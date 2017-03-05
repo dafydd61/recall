@@ -296,6 +296,7 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   background: rgba(255, 255, 255, .1);
   padding: .5rem;
   margin-bottom: .5rem;
+  overflow-y: scroll;
 }
 
 .MealSummary p,
@@ -440,7 +441,7 @@ button.complete:after {
 .viewport {
   width: 100vw;
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 3rem);
   transition: all .3s ease;
 }
 

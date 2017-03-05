@@ -37,7 +37,7 @@ class App extends Component {
         currentMeal: {
           id: '0',
           location: '',
-          foods: [],
+          foods: {},
           bolus: '',
           combo: '',
           notes: '',
@@ -99,7 +99,7 @@ class App extends Component {
         });
       }
 
-      const mealFormScreenRef = parseInt(localStorage.getItem('mealFormScreen'), 10);
+      const mealFormScreenRef = parseInt(localStorage.getItem('mealFormScreen'),10);
       if (mealFormScreenRef) {
         this.setState({
           mealFormScreen: mealFormScreenRef
@@ -110,8 +110,6 @@ class App extends Component {
         });
         localStorage.setItem('mealFormScreen', 0);
       }
-
-
 
     }
   }

@@ -20,7 +20,6 @@ class AddMealForm extends Component {
     this.useMeal = this.useMeal.bind(this);
     this.createCurrentMeal = this.createCurrentMeal.bind(this);
     this.updateNotes = this.updateNotes.bind(this);
-    this.setupNewMeal = this.setupNewMeal.bind(this);
   }
 
   componentWillMount() {
@@ -29,7 +28,7 @@ class AddMealForm extends Component {
       currentMeal: {
         id: '0',
         location: '',
-        foods: [],
+        foods: {},
         bolus: '',
         combo: '',
         notes: '',
@@ -45,13 +44,14 @@ class AddMealForm extends Component {
         }
       }
     });
+    // this.createCurrentMeal();
   }
 
   createCurrentMeal(e, lastMealId=0) {
     const id = Date.now();
     const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
     const location = lastMeal.location ? lastMeal.location : this.location.value;
-    const foods = lastMeal.foods ? lastMeal.foods : [];
+    const foods = lastMeal.foods ? lastMeal.foods : {};
     const bolus = lastMeal.bolus ? lastMeal.bolus : '';
     const combo = lastMeal.combo ? lastMeal.combo : '';
     const currentMeal = {
@@ -85,7 +85,7 @@ class AddMealForm extends Component {
     console.log(nextScreen);
   }
 
-  setupNewMeal() {
+  componentDidMount() {
     const locationSelect = document.getElementById('location');
     const selectedLocation = locationSelect.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
@@ -98,10 +98,6 @@ class AddMealForm extends Component {
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
-  componentDidMount() {
-    this.setupNewMeal();
-  }
-
   renderLocationOption(key) {
     const id = `location-option-${key}`;
     return(<option id={id} key={key} value={key}>{this.props.locations[key]['name']}</option>);
@@ -110,6 +106,7 @@ class AddMealForm extends Component {
   createMeal(event) {
     event.preventDefault();
     this.props.addMeal(this.state.currentMeal);
+    this.props.setViewportPosition(0);
   }
 
   updateBolus(e) {
@@ -120,20 +117,16 @@ class AddMealForm extends Component {
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
-  addFoodItem(index, foodItem) {
+  addFoodItem(id, foodItem) {
     const currentMeal = this.state.currentMeal;
-    console.log(currentMeal);
-    currentMeal.foods.push(foodItem);
+    currentMeal.foods[id] = foodItem;
     this.setState({ currentMeal })
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   removeFoodItem(index) {
     const currentMeal = this.state.currentMeal;
-    currentMeal.foods = [
-      ...currentMeal.foods.slice(0, index),
-      ...currentMeal.foods.slice(index + 1)
-    ];
+    delete currentMeal.foods[index];
     this.setState({ currentMeal })
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
