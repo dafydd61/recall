@@ -382,25 +382,29 @@ button.complete:after {
 }
 
 .main-nav {
-  padding: 1rem 0;
+  padding: 0;
 }
 
 .menu-list {
   list-style: none;
   padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(255, 255, 255, .2);
 }
 
 .menu-list li a {
   font-size: 14px;
-  height: 2rem;
-  line-height: 2rem;
+  height: 3rem;
+  line-height: 3rem;
   text-decoration: none;
   display: block;
   padding: 0 1rem;
+  background: rgba(255, 255, 255, .1);
+  border-top: 1px solid rgba(60, 60, 60, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
 }
 
 .menu-list li:nth-of-type(2n-1) a {
-  background: rgba(255, 255, 255, .1);
 }
 
 .menu-list > li > a:hover,

@@ -14,15 +14,20 @@ class MainNav extends Component {
 
 	cancelCurrentMeal(e) {
 		e.preventDefault();
-
+		const confirmClear = confirm('Are you sure you want to erase the current meal? It won’t be saved.');
+		if (confirmClear === true) {
+			this.props.cancelCurrentMeal();
+			const mainNav = document.getElementById('main-nav');
+			mainNav.classList.add('left');
+		}
 	}
 
 	render() {
 		return (
 			<div id="main-nav" className="main-nav screen left">
 				<ol className="menu-list">
-					<li><a href="#" onClick={(e) => this.confirmClearData(e)}>Clear all data</a></li>
 					<li><a href="#" onClick={(e) => this.cancelCurrentMeal(e)}>Cancel current meal</a></li>
+					<li><a href="#" onClick={(e) => this.confirmClearData(e)}>Clear all data</a></li>
 					<li><a href="#">What’s all this about?</a></li>
 				</ol>
 			</div>

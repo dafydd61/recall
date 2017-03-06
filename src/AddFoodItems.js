@@ -11,7 +11,6 @@ class AddFoodItems extends Component {
 		e.preventDefault();
 		const foodItem = this.foodItem.value;
 		const foodIds = Object.keys(this.props.foods);
-		console.log(foodIds);
 		const newFoodId = foodIds.length > 0 ? parseInt(foodIds[foodIds.length - 1], 10) + 1 : 0;
 		this.props.addFoodItem(newFoodId, foodItem);
 		this.foodItem.value="";
@@ -30,7 +29,7 @@ class AddFoodItems extends Component {
 	}
 
 	render() {
-		const foodIds = Object.keys(this.props.foods);
+		const foodIds = Object.keys(this.props.foods || {});
 		return (
 			<div className="AddFoodItems">
 				<ul className="food-item-list">

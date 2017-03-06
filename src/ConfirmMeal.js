@@ -18,7 +18,6 @@ class ConfirmMeal extends Component {
       checkInTime: hours,
       checkInId: checkInId,
     });
-    console.log(`Check in: ${hours}`);
     const checkInForm = document.getElementById('check-in');
     checkInForm.classList.remove('up');
   }

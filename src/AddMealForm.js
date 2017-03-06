@@ -10,16 +10,13 @@ class AddMealForm extends Component {
   constructor() {
     super();
     this.renderLocationOption = this.renderLocationOption.bind(this);
-    this.createMeal = this.createMeal.bind(this);
+    this.saveMeal = this.saveMeal.bind(this);
     this.showAddLocationForm = this.showAddLocationForm.bind(this);
     this.nextScreen = this.nextScreen.bind(this);
-    this.selectLocation = this.selectLocation.bind(this);
-    this.addFoodItem = this.addFoodItem.bind(this);
-    this.removeFoodItem = this.removeFoodItem.bind(this);
+    this.checkLastMeal = this.checkLastMeal.bind(this);
     this.updateBg = this.updateBg.bind(this);
     this.useMeal = this.useMeal.bind(this);
     this.createCurrentMeal = this.createCurrentMeal.bind(this);
-    this.updateNotes = this.updateNotes.bind(this);
   }
 
   componentWillMount() {
@@ -47,7 +44,14 @@ class AddMealForm extends Component {
     // this.createCurrentMeal();
   }
 
-  createCurrentMeal(e, lastMealId=0) {
+  createCurrentMeal(e, lastMealId) {
+    e.preventDefault();
+    const newMeal = this.props.createMeal(this.location.value, lastMealId);
+    this.props.setCurrentMeal(newMeal.id, newMeal.properties);
+    this.goToNextScreen(e);
+  }
+
+  OLDcreateCurrentMeal(e, lastMealId=0) {
     const id = Date.now();
     const lastMeal = this.props.meals[lastMealId] ? this.props.meals[lastMealId] : {}
     const location = lastMeal.location ? lastMeal.location : this.location.value;
@@ -82,20 +86,18 @@ class AddMealForm extends Component {
     e.preventDefault();
     const nextScreen = this.props.viewportPosition + 1;
     this.props.setViewportPosition(nextScreen);
-    console.log(nextScreen);
   }
 
   componentDidMount() {
     const locationSelect = document.getElementById('location');
     const selectedLocation = locationSelect.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
-    const currentMeal = this.state.currentMeal;
-    currentMeal.location = selectedLocation;
+    // const currentMeal = this.state.currentMeal;
+    // currentMeal.location = selectedLocation;
     this.setState({
       lastMealId: lastMealId,
-      currentMeal: currentMeal,
     });
-    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
+    // localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
   renderLocationOption(key) {
@@ -103,9 +105,9 @@ class AddMealForm extends Component {
     return(<option id={id} key={key} value={key}>{this.props.locations[key]['name']}</option>);
   }
 
-  createMeal(event) {
+  saveMeal(event) {
     event.preventDefault();
-    this.props.addMeal(this.state.currentMeal);
+    this.props.addMeal(this.props.currentMeal);
     this.props.setViewportPosition(0);
   }
 
@@ -117,30 +119,22 @@ class AddMealForm extends Component {
     localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
   }
 
-  addFoodItem(id, foodItem) {
-    const currentMeal = this.state.currentMeal;
-    currentMeal.foods[id] = foodItem;
-    this.setState({ currentMeal })
-    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
-  }
-
-  removeFoodItem(index) {
-    const currentMeal = this.state.currentMeal;
-    delete currentMeal.foods[index];
-    this.setState({ currentMeal })
-    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
-  }
-
-  selectLocation() {
-    const selectedLocation = this.location.value;
-    const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
-    const currentMeal = this.state.currentMeal;
-    currentMeal.location = selectedLocation;
-    this.setState({
-      lastMealId: lastMealId,
-      currentMeal: currentMeal,
-    });
-    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
+  checkLastMeal(currentLocation) {
+    const mealId = this.props.locations[currentLocation].lastMeal || 0;
+    if (mealId === '0') {
+      return (
+        <div className="info">
+          <p>You haven't eaten here before.</p>
+        </div>
+      )
+    } else {
+      return (
+        <div className="info">
+          <p>You’ve eaten here before.</p>
+          <p><a href="#" onClick={(e) => this.showMealSummary(e)}>Review</a></p>
+        </div>
+      )
+    }
   }
 
   showAddLocationForm(event) {
@@ -180,56 +174,38 @@ class AddMealForm extends Component {
     });
   }
 
-  updateNotes(newNotes) {
-    const currentMeal = this.state.currentMeal;
-    currentMeal.notes = newNotes;
-    this.setState({
-      currentMeal
-    });
-    localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
-  }
-
-  checkLastMeal(mealId) {
-    if (mealId === '0') {
-      return (
-        <div className="info">
-          <p>You haven't eaten here before.</p>
-        </div>
-      )
-    } else {
-      return (
-        <div className="info">
-          <p>You’ve eaten here before.</p>
-          <p><a href="#" onClick={(e) => this.showMealSummary(e)}>Review</a></p>
-        </div>
-      )
-    }
-  }
-
   showMealSummary(e) {
     e.preventDefault();
     const lastMealSummary = document.getElementById('add-meal__lastMealSummary');
     lastMealSummary.classList.remove('up');
   }
 
+  hideMealSummary(e) {
+    e.preventDefault();
+    const lastMealSummary = document.getElementById('add-meal__lastMealSummary');
+    lastMealSummary.classList.add('up');
+  }
+
   useMeal(e, mealId) {
+    const lastMealSummary = document.getElementById('add-meal__lastMealSummary');
+    lastMealSummary.classList.add('up');
     this.createCurrentMeal(e, mealId);
   }
 
   render() {
     return (
       <div className={`viewport viewport-screen-${this.props.viewportPosition}`}>
-        <form className="add-meal screen-container" onSubmit={this.createMeal}>
+        <form className="add-meal screen-container" onSubmit={this.saveMeal}>
           <div id="add-meal__location" className="add-meal__location screen current">
             <div className="form-content">
               <h2 className="title--screen">About to eat? Tell me where...</h2>
               <div className="form-controls--inline">
-                <select id="location" name="location" ref={(input) => this.location = input} onChange={this.selectLocation}>
+                <select id="location" name="location" ref={(input) => this.location = input} onChange={(e) => this.props.selectLocation(e)}>
                   {Object.keys(this.props.locations).map(this.renderLocationOption)};
                 </select>
                 <button className="btn btn--add" onClick={(e) => this.showAddLocationForm(e) }>+</button>
               </div>
-              {this.checkLastMeal(this.state.lastMealId)}
+              {this.checkLastMeal(this.props.currentLocation)}
             </div>
             <div className="form-nav">
               {/*<button onClick={(e) => this.nextScreen(e, 'add-meal__food', 'newFoodItem') }>New Meal</button>*/}
@@ -240,9 +216,9 @@ class AddMealForm extends Component {
             <h2 className="title--screen">What are you planning to eat?</h2>
             <div className="form-content">
               <AddFoodItems
-                foods={this.state.currentMeal.foods}
-                addFoodItem={this.addFoodItem}
-                removeFoodItem={this.removeFoodItem}
+                foods={this.props.currentMeal.foods}
+                addFoodItem={this.props.addFoodItem}
+                removeFoodItem={this.props.removeFoodItem}
               />
             </div>
             <div className="form-nav">
@@ -258,8 +234,8 @@ class AddMealForm extends Component {
                     <BgButton
                       key={id}
                       id={id}
-                      selectedOption={this.state.currentMeal.bgLevel.pre}
-                      action={this.updateBg}
+                      selectedOption={this.props.currentMeal.bgLevel.pre}
+                      action={this.props.updateBg}
                       time='pre'
                       parameter='bgLevel'
                     />
@@ -270,8 +246,8 @@ class AddMealForm extends Component {
                     <BgButton
                       key={id}
                       id={id}
-                      selectedOption={this.state.currentMeal.bgTrend.pre}
-                      action={this.updateBg}
+                      selectedOption={this.props.currentMeal.bgTrend.pre}
+                      action={this.props.updateBg}
                       time='pre'
                       parameter='bgTrend'
                     />
@@ -285,8 +261,8 @@ class AddMealForm extends Component {
           </div>
           <div id="add-meal__bolus" className="add-meal__bolus screen next">
             <div className="form-content">
-              <input ref={(input) => this.bolus = input} value={this.state.currentMeal.bolus} type="text" id="bolus" name="bolus" placeholder="Bolus" onChange={(e) => this.updateBolus(e)} />
-              <input ref={(input) => this.combo = input} value={this.state.currentMeal.combo} type="text" name="combo" placeholder="Combo" onChange={(e) => this.updateBolus(e)} />
+              <input ref={(input) => this.bolus = input} defaultValue={this.props.currentMeal.bolus} type="text" id="bolus" name="bolus" placeholder="Bolus" onChange={(e) => this.props.updateBolus(e)} />
+              <input ref={(input) => this.combo = input} defaultValue={this.props.currentMeal.combo} type="text" name="combo" placeholder="Combo" onChange={(e) => this.props.updateBolus(e)} />
               {/*<input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />*/}
             </div>
             <div className="form-nav">
@@ -297,11 +273,11 @@ class AddMealForm extends Component {
             <ConfirmMeal
               bgTrends={this.props.bgTrends}
               bgLevels={this.props.bgLevels}
-              bgTrend={this.state.currentMeal.bgTrend}
-              bgLevel={this.state.currentMeal.bgLevel}
-              notes={this.state.currentMeal.notes}
-              updateNotes={this.updateNotes}
-              updateBg={this.updateBg}
+              bgTrend={this.props.currentMeal.bgTrend}
+              bgLevel={this.props.currentMeal.bgLevel}
+              notes={this.props.currentMeal.notes}
+              updateNotes={this.props.updateNotes}
+              updateBg={this.props.updateBg}
             />
           </div>
           <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
@@ -310,7 +286,10 @@ class AddMealForm extends Component {
               meals={this.props.meals}
               nextScreen={this.nextScreen}
               useMeal={this.useMeal}
+              hideMealSummary={this.hideMealSummary}
               createCurrentMeal={this.createCurrentMeal}
+              currentLocation={this.props.currentLocation}
+              locations={this.props.locations}
             />
           </div>
         </form>
