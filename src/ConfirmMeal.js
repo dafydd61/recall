@@ -53,7 +53,7 @@ class ConfirmMeal extends Component {
           <button className={checkin2} onClick={(e) => this.showCheckInForm(e, '2')}>2 hour check-in</button>
           <button className={checkin4} onClick={(e) => this.showCheckInForm(e, '4')}>4 hour check-in</button>
           <button onClick={(e) => this.showNotes(e)}>Notes</button>
-          <button type="submit">Save this meal</button>
+          <button onClick={(e) => this.props.saveMeal(e)}>Save this meal</button>
         </div>
         <div id="confirm__notes" className="drop-in up screen--notes">
           <h2 className="title--screen">Notes</h2>

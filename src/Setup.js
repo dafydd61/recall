@@ -6,7 +6,6 @@ class Setup extends Component {
     event.preventDefault();
     console.log('Setup done');
     localStorage.setItem('is-setup-complete', true);
-    // localStorage.setItem('is-notification-allowed', true);
     this.context.router.push('/');
   }
   render() {

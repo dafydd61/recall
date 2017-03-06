@@ -192,10 +192,14 @@ class AddMealForm extends Component {
     this.createCurrentMeal(e, mealId);
   }
 
+  preventSubmit() {
+    return false;
+  }
+
   render() {
     return (
       <div className={`viewport viewport-screen-${this.props.viewportPosition}`}>
-        <form className="add-meal screen-container" onSubmit={this.saveMeal}>
+        <form className="add-meal screen-container" onSubmit={this.preventSubmit()}>
           <div id="add-meal__location" className="add-meal__location screen current">
             <div className="form-content">
               <h2 className="title--screen">About to eat? Tell me where...</h2>
@@ -278,6 +282,7 @@ class AddMealForm extends Component {
               notes={this.props.currentMeal.notes}
               updateNotes={this.props.updateNotes}
               updateBg={this.props.updateBg}
+              saveMeal={this.saveMeal}
             />
           </div>
           <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
