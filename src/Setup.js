@@ -13,6 +13,7 @@ class Setup extends Component {
       <div className="Setup screen">
         <form className="setup" onSubmit={this.completeSetup.bind(this)}>
           <h2>Welcome to Recall</h2>
+          <p>We’re testing! There’s a good chance you’ll come across some bugs. Until we get everything ironed out, you’ll get the best experience possible using an iPhone.</p>
           <p>This app is designed to help you keep track of what you ate, how much insulin you took, and how it turned out.</p>
           <p>This app is strictly for record-keeping; it doesn't make recommendations either for food or insulin. That's what your health team is for.</p>
           <p><input type="checkbox" id="iGetIt" ref={(input) => {this.iGetIt = input}}/> <label htmlFor="iGetIt">I get it. This is just for record-keeping.</label></p>
