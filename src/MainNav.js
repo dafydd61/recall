@@ -28,7 +28,6 @@ class MainNav extends Component {
 				<ol className="menu-list">
 					<li><a href="#" onClick={(e) => this.cancelCurrentMeal(e)}>Cancel current meal</a></li>
 					<li><a href="#" onClick={(e) => this.confirmClearData(e)}>Clear all data</a></li>
-					<li><a href="#">What’s all this about?</a></li>
 				</ol>
 			</div>
 		)
