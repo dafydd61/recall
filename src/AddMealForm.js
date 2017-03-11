@@ -150,11 +150,11 @@ class AddMealForm extends Component {
 
   goToScreen(screenId, focusElement = '') {
     const currentScreen = document.querySelector('.current');
-    currentScreen.classList.add('previous');
-    currentScreen.classList.remove('current');
+    // currentScreen.classList.add('previous');
+    // currentScreen.classList.remove('current');
     const nextScreen = document.getElementById(screenId);
-    nextScreen.classList.add('current');
-    nextScreen.classList.remove('next');
+    // nextScreen.classList.add('current');
+    // nextScreen.classList.remove('next');
     this.setState({
       currentScreenId: screenId
     });
@@ -199,8 +199,9 @@ class AddMealForm extends Component {
   render() {
     return (
       <div className={`viewport viewport-screen-${this.props.viewportPosition}`}>
-        <form className="add-meal screen-container" onSubmit={this.preventSubmit()}>
-          <div id="add-meal__location" className="add-meal__location screen current">
+        {/*<form className="add-meal screen-container" onSubmit={this.preventSubmit()}>*/}
+        <div className="add-meal screen-container">
+          <form id="add-meal__location" className="add-meal__location screen current">
             <div className="form-content">
               <h2 className="title--screen">About to eat? Tell me where...</h2>
               <div className="form-controls--inline">
@@ -215,8 +216,8 @@ class AddMealForm extends Component {
               {/*<button onClick={(e) => this.nextScreen(e, 'add-meal__food', 'newFoodItem') }>New Meal</button>*/}
               <button onClick={(e) => this.createCurrentMeal(e) }>New Meal</button>
             </div>
-          </div>
-          <div id="add-meal__food" className="add-meal__food screen next">
+          </form>
+          <form id="add-meal__food" className="add-meal__food screen next">
             <h2 className="title--screen">What are you planning to eat?</h2>
             <div className="form-content">
               <AddFoodItems
@@ -228,8 +229,8 @@ class AddMealForm extends Component {
             <div className="form-nav">
               <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
             </div>
-          </div>
-          <div id="add-meal__bg" className="add-meal__bg screen next">
+          </form>
+          <form id="add-meal__bg" className="add-meal__bg screen next">
             <h2 className="title--screen">What’s your sugar doing?</h2>
             <div className="form-content">
               <div className="bg-map">
@@ -242,6 +243,7 @@ class AddMealForm extends Component {
                       action={this.props.updateBg}
                       time='pre'
                       parameter='bgLevel'
+                      // onFocus=this.goToScreen(2)
                     />
                   )}
                 </div>
@@ -254,6 +256,7 @@ class AddMealForm extends Component {
                       action={this.props.updateBg}
                       time='pre'
                       parameter='bgTrend'
+                      // onFocus=this.goToScreen(2)
                     />
                   )}
                 </div>
@@ -262,8 +265,8 @@ class AddMealForm extends Component {
             <div className="form-nav">
               <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
             </div>
-          </div>
-          <div id="add-meal__bolus" className="add-meal__bolus screen next">
+          </form>
+          <form id="add-meal__bolus" className="add-meal__bolus screen next">
             <div className="form-content">
               <input ref={(input) => this.bolus = input} defaultValue={this.props.currentMeal.bolus} type="text" id="bolus" name="bolus" placeholder="Bolus" onChange={(e) => this.props.updateBolus(e)} />
               <input ref={(input) => this.combo = input} defaultValue={this.props.currentMeal.combo} type="text" name="combo" placeholder="Combo" onChange={(e) => this.props.updateBolus(e)} />
@@ -272,8 +275,8 @@ class AddMealForm extends Component {
             <div className="form-nav">
               <button onClick={(e) => this.goToNextScreen(e) }>Ok. Let's eat.</button>
             </div>
-          </div>
-          <div id="add-meal__confirm" className="add-meal__confirm screen next">
+          </form>
+          <form id="add-meal__confirm" className="add-meal__confirm screen next">
             <ConfirmMeal
               bgTrends={this.props.bgTrends}
               bgLevels={this.props.bgLevels}
@@ -284,7 +287,7 @@ class AddMealForm extends Component {
               updateBg={this.props.updateBg}
               saveMeal={this.saveMeal}
             />
-          </div>
+          </form>
           <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
             <MealSummary
               mealId={this.state.lastMealId}
@@ -297,7 +300,8 @@ class AddMealForm extends Component {
               locations={this.props.locations}
             />
           </div>
-        </form>
+        {/*</form>*/}
+        </div>
         <AddLocationForm addLocation={this.props.addLocation} />
       </div>
     )
