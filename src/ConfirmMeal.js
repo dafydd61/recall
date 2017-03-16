@@ -24,6 +24,7 @@ class ConfirmMeal extends Component {
 
   showNotes(e) {
     e.preventDefault();
+    // console.log("notes");
     const notesForm = document.getElementById('confirm__notes');
     notesForm.classList.remove('up');
   }

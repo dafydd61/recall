@@ -350,7 +350,8 @@ button.complete:after {
 }
 
 .screen--notes textarea {
-  color: white;
+  color: #000080;
+  border: 1px solid #000080;
   padding: .5rem;
   flex-grow: 1;
   margin-bottom: 1rem;

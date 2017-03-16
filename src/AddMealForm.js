@@ -5,10 +5,10 @@ import MealSummary from './MealSummary';
 import BgButton from './BgButton';
 import ConfirmMeal from './ConfirmMeal';
 
-function findAncestor (el, cls) {
-  while ((el = el.parentElement) && !el.classList.contains(cls));
-  return el;
-}
+// function findAncestor (el, cls) {
+//   while ((el = el.parentElement) && !el.classList.contains(cls));
+//   return el;
+// }
 
 
 class AddMealForm extends Component {
@@ -90,7 +90,7 @@ class AddMealForm extends Component {
 
   goToNextScreen(e) {
     e.preventDefault();
-    const nextScreen = this.props.viewportPosition + 1;
+    const nextScreen = parseInt(this.props.viewportPosition, 10) + 1;
     this.props.setViewportPosition(nextScreen);
   }
 
@@ -112,20 +112,20 @@ class AddMealForm extends Component {
     const fields = addMeal.querySelectorAll('input');
     const buttons = addMeal.querySelectorAll('button');
     const component = this;
-    fields.forEach(function(el) {
-      el.onfocus = function() {
-        const parentScreen = findAncestor(el, 'screen');
-        // console.log(parentScreen, parentScreen.dataset.screenNumber);
-        component.props.setViewportPosition(parentScreen.dataset.screenNumber);
-      };
-    });
-    buttons.forEach(function(el) {
-      el.onfocus = function() {
-        const parentScreen = findAncestor(el, 'screen');
-        // console.log(parentScreen, parentScreen.dataset.screenNumber);
-        component.props.setViewportPosition(parentScreen.dataset.screenNumber);
-      };
-    });
+    // fields.forEach(function(el) {
+    //   el.onfocus = function() {
+    //     const parentScreen = findAncestor(el, 'screen');
+    //     // console.log(parentScreen, parentScreen.dataset.screenNumber);
+    //     component.props.setViewportPosition(parentScreen.dataset.screenNumber);
+    //   };
+    // });
+    // buttons.forEach(function(el) {
+    //   el.onfocus = function() {
+    //     const parentScreen = findAncestor(el, 'screen');
+    //     // console.log(parentScreen, parentScreen.dataset.screenNumber);
+    //     component.props.setViewportPosition(parentScreen.dataset.screenNumber);
+    //   };
+    // });
   }
 
   renderLocationOption(key) {
