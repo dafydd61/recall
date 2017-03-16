@@ -5,6 +5,12 @@ import MealSummary from './MealSummary';
 import BgButton from './BgButton';
 import ConfirmMeal from './ConfirmMeal';
 
+function findAncestor (el, cls) {
+  while ((el = el.parentElement) && !el.classList.contains(cls));
+  return el;
+}
+
+
 class AddMealForm extends Component {
 
   constructor() {
@@ -88,16 +94,38 @@ class AddMealForm extends Component {
     this.props.setViewportPosition(nextScreen);
   }
 
+  goToPreviousScreen(e) {
+    e.preventDefault();
+    const nextScreen = this.props.viewportPosition - 1;
+    this.props.setViewportPosition(nextScreen);
+  }
+
   componentDidMount() {
     const locationSelect = document.getElementById('location');
     const selectedLocation = locationSelect.value;
     const lastMealId = this.props.locations[selectedLocation]['lastMeal'];
-    // const currentMeal = this.state.currentMeal;
-    // currentMeal.location = selectedLocation;
     this.setState({
       lastMealId: lastMealId,
     });
-    // localStorage.setItem('currentMeal', JSON.stringify(currentMeal));
+    // Set up tab focus
+    const addMeal = document.querySelector('.add-meal')
+    const fields = addMeal.querySelectorAll('input');
+    const buttons = addMeal.querySelectorAll('button');
+    const component = this;
+    fields.forEach(function(el) {
+      el.onfocus = function() {
+        const parentScreen = findAncestor(el, 'screen');
+        // console.log(parentScreen, parentScreen.dataset.screenNumber);
+        component.props.setViewportPosition(parentScreen.dataset.screenNumber);
+      };
+    });
+    buttons.forEach(function(el) {
+      el.onfocus = function() {
+        const parentScreen = findAncestor(el, 'screen');
+        // console.log(parentScreen, parentScreen.dataset.screenNumber);
+        component.props.setViewportPosition(parentScreen.dataset.screenNumber);
+      };
+    });
   }
 
   renderLocationOption(key) {
@@ -149,7 +177,7 @@ class AddMealForm extends Component {
   }
 
   goToScreen(screenId, focusElement = '') {
-    const currentScreen = document.querySelector('.current');
+    // const currentScreen = document.querySelector('.current');
     // currentScreen.classList.add('previous');
     // currentScreen.classList.remove('current');
     const nextScreen = document.getElementById(screenId);
@@ -201,7 +229,7 @@ class AddMealForm extends Component {
       <div className={`viewport viewport-screen-${this.props.viewportPosition}`}>
         {/*<form className="add-meal screen-container" onSubmit={this.preventSubmit()}>*/}
         <div className="add-meal screen-container">
-          <form id="add-meal__location" className="add-meal__location screen current">
+          <form id="add-meal__location" data-screen-number="0" className="add-meal__location screen current">
             <div className="form-content">
               <h2 className="title--screen">About to eat? Tell me where...</h2>
               <div className="form-controls--inline">
@@ -213,11 +241,10 @@ class AddMealForm extends Component {
               {this.checkLastMeal(this.props.currentLocation)}
             </div>
             <div className="form-nav">
-              {/*<button onClick={(e) => this.nextScreen(e, 'add-meal__food', 'newFoodItem') }>New Meal</button>*/}
               <button onClick={(e) => this.createCurrentMeal(e) }>New Meal</button>
             </div>
           </form>
-          <form id="add-meal__food" className="add-meal__food screen next">
+          <form id="add-meal__food" data-screen-number="1" className="add-meal__food screen next">
             <h2 className="title--screen">What are you planning to eat?</h2>
             <div className="form-content">
               <AddFoodItems
@@ -226,11 +253,12 @@ class AddMealForm extends Component {
                 removeFoodItem={this.props.removeFoodItem}
               />
             </div>
-            <div className="form-nav">
-              <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
+            <div className="form-nav form-nav--inline">
+              <button className="btn--form-nav" onClick={(e) => this.goToPreviousScreen(e) }><span className="fa fa-arrow-left"></span><span className="sr-only">Back</span></button>
+              <button className="btn--form-nav" onClick={(e) => this.goToNextScreen(e) }><span className="fa fa-arrow-right"></span><span className="sr-only">Next</span></button>
             </div>
           </form>
-          <form id="add-meal__bg" className="add-meal__bg screen next">
+          <form id="add-meal__bg" data-screen-number="2" className="add-meal__bg screen next">
             <h2 className="title--screen">What’s your sugar doing?</h2>
             <div className="form-content">
               <div className="bg-map">
@@ -262,21 +290,23 @@ class AddMealForm extends Component {
                 </div>
               </div>
             </div>
-            <div className="form-nav">
-              <button onClick={(e) => this.goToNextScreen(e) }>Next</button>
+            <div className="form-nav form-nav--inline">
+              <button className="btn--form-nav" onClick={(e) => this.goToPreviousScreen(e) }><span className="fa fa-arrow-left"></span><span className="sr-only">Back</span></button>
+              <button className="btn--form-nav" onClick={(e) => this.goToNextScreen(e) }><span className="fa fa-arrow-right"></span><span className="sr-only">Next</span></button>
             </div>
           </form>
-          <form id="add-meal__bolus" className="add-meal__bolus screen next">
+          <form id="add-meal__bolus" data-screen-number="3" className="add-meal__bolus screen next">
             <div className="form-content">
               <input ref={(input) => this.bolus = input} defaultValue={this.props.currentMeal.bolus} type="text" id="bolus" name="bolus" placeholder="Bolus" onChange={(e) => this.props.updateBolus(e)} />
               <input ref={(input) => this.combo = input} defaultValue={this.props.currentMeal.combo} type="text" name="combo" placeholder="Combo" onChange={(e) => this.props.updateBolus(e)} />
               {/*<input ref={(input) => this.notes = input} type="text" name="notes" placeholder="Notes" />*/}
             </div>
-            <div className="form-nav">
-              <button onClick={(e) => this.goToNextScreen(e) }>Ok. Let's eat.</button>
+            <div className="form-nav form-nav--inline">
+              <button className="btn--form-nav" onClick={(e) => this.goToPreviousScreen(e) }><span className="fa fa-arrow-left"></span><span className="sr-only">Back</span></button>
+              <button onClick={(e) => this.goToNextScreen(e) }>Let’s eat <span className="fa fa-arrow-right"></span></button>
             </div>
           </form>
-          <form id="add-meal__confirm" className="add-meal__confirm screen next">
+          <form id="add-meal__confirm" data-screen-number="4" className="add-meal__confirm screen next">
             <ConfirmMeal
               bgTrends={this.props.bgTrends}
               bgLevels={this.props.bgLevels}
@@ -288,19 +318,19 @@ class AddMealForm extends Component {
               saveMeal={this.saveMeal}
             />
           </form>
-          <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
-            <MealSummary
-              mealId={this.state.lastMealId}
-              meals={this.props.meals}
-              nextScreen={this.nextScreen}
-              useMeal={this.useMeal}
-              hideMealSummary={this.hideMealSummary}
-              createCurrentMeal={this.createCurrentMeal}
-              currentLocation={this.props.currentLocation}
-              locations={this.props.locations}
-            />
-          </div>
         {/*</form>*/}
+        </div>
+        <div id="add-meal__lastMealSummary" className="add-meal__lastMealSummary drop-in up">
+          <MealSummary
+            mealId={this.state.lastMealId}
+            meals={this.props.meals}
+            nextScreen={this.nextScreen}
+            useMeal={this.useMeal}
+            hideMealSummary={this.hideMealSummary}
+            createCurrentMeal={this.createCurrentMeal}
+            currentLocation={this.props.currentLocation}
+            locations={this.props.locations}
+          />
         </div>
         <AddLocationForm addLocation={this.props.addLocation} />
       </div>

@@ -219,6 +219,24 @@ input:focus:-moz-placeholder { /* Firefox 18- */
   margin-bottom: 0;
 }
 
+.form-nav--inline {
+  display: flex;
+}
+
+.form-nav--inline button {
+  width: 50%;
+  margin: 0 .5rem;
+  display: inline-block;
+}
+
+.form-nav--inline button:first-child {
+  margin-left: 0;
+}
+
+.form-nav--inline button:last-child {
+  margin-right: 0;
+}
+
 .form-controls--inline {
   display: flex;
 }
